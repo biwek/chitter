@@ -1,3 +1,18 @@
 <h1> Chitter </h1>
 
-<h3> <a href=''>Sign up</a> and start posting!</h3>
+<% if current_user %>
+	
+	Welcome, <%= @current_user.name %>
+	
+	<div id='create_peep'>
+		<form action='/peep' method='post'> 
+			Post: <input type='text' name='post'>
+			<input type='submit' value='Peep!'>
+		</form>
+	</div>
+
+<% else %>
+
+	<h3> <a href='/users/new'>Sign up</a> and start posting!</h3>
+
+<% end %>
