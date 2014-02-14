@@ -2,10 +2,11 @@ source "https://rubygems.org"
 
 gem 'sinatra'
 gem 'data_mapper'
-gem 'rack-flash3'
+gem 'dm-postgres-adapter'
+gem 'thin'
 
 group :development, :test do 
 	gem 'rspec'
 	gem 'capybara'
-	gem 'data_cleaner'
+	gem 'database_cleaner'
 end
