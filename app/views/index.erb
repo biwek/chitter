@@ -1,9 +1,16 @@
 <h1> Chitter </h1>
 
+<% if flash[:notice] %>
+	<%= flash[:notice] %>
+<% end %>
+
 <% if current_user %>
 	
 	Welcome, <%= @current_user.name %>
-	
+	<form action='/sessions' method="post">
+	<input type='hidden' name='_method' value='delete'>
+	<input type='submit' value='Sign out'>
+	</form>
 	<div id='create_peep'>
 		<form action='/peep' method='post'> 
 			Post: <input type='text' name='post'>
@@ -21,7 +28,7 @@
 <h3> Peeps: </h3>
 <ul>
 <% @peeps.each do |peep| %>
-	<li> <%= peep.user.name %> (<%=peep.user.username %>) </li> 
+	<li> <%= peep.user.name %> (@<%=peep.user.username %>) - <%= peep.created_at.strftime('%b %d (%H:%M)')%></li> 
 			<%= peep.post%>
 <% end %>
 </ul>

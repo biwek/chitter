@@ -41,3 +41,24 @@ feature "User signs in" do
 	end
 
 end
+
+feature "User signs out" do 
+
+	before(:each) do 
+		User.create({name: 'Juan Mata',
+								 username: 'juan8',
+								 email: 'juan@example.com',
+								 password: 'pass',
+								 password_confirmation: 'pass'})
+	end
+
+	scenario "after signing in" do 
+		visit '/'
+		sign_in("juan@example.com", "pass")
+		expect(page).to have_content("Welcome, Juan Mata")
+		click_button 'Sign out'
+		expect(page).not_to have_content('Welcome, Juan Mata')
+		expect(page).to have_content("You have successfully been signed out!")
+	end
+
+end

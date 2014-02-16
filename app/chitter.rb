@@ -22,9 +22,11 @@ end
 
 post '/peep' do
 	peep = params[:post]
+	time = Time.new
 	user = User.get(session[:user_id])
 	Peep.create({user: user,
-							 post: peep}) 
+							 post: peep,
+							 created_at: time}) 
 	redirect '/'
 end
 
@@ -63,6 +65,12 @@ post '/sessions' do
 		flash[:error] = 'Sorry, wrong email or password!'
 		erb :'/sessions/new'
 	end
+end
+
+delete '/sessions' do
+	flash[:notice] = "You have successfully been signed out!" 
+	session[:user_id] = nil
+	redirect to('/')
 end
 
 helpers do 
