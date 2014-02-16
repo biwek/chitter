@@ -14,6 +14,8 @@ feature "Listing peeps" do
 		sign_in('biwek@shrestha.com', 'pass')
 		create_peep('Create and list this peep!')
 		expect(page).to have_content('Create and list this peep!')
+		expect(page).to have_content('Biwek Shrestha')
+		expect(page).to have_content('@bwake')
 	end
 
 end
