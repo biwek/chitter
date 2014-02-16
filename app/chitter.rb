@@ -1,20 +1,18 @@
-env = ENV["RACK_ENV"] ||= "development"
 
 require 'sinatra'
 require 'data_mapper'
 require 'rack-flash'
+require_relative './helpers/app_helper'
 require_relative '../lib/peep'
 require_relative '../lib/user'
-
-DataMapper.setup(:default, "postgres://localhost/chitter_#{env}")
-DataMapper.finalize
-DataMapper.auto_upgrade!
+require_relative './data_mapper_config'
 
 enable :sessions
 set :session_secret, 'secret key'
 
 use Rack::Flash
 
+# peep
 get '/' do 
 	@peeps = Peep.all
 	erb :index
@@ -30,6 +28,8 @@ post '/peep' do
 	redirect '/'
 end
 
+
+# signup
 get '/users/new' do 
 	erb :'users/new'
 end
@@ -44,11 +44,13 @@ post '/users' do
 		session[:user_id] = user.id
 		redirect to('/')
 	else
-		flash[:error] = 'Sorry, your passwords do NOT match!'
+		flash[:errors] = user.errors.full_messages
 		erb :'users/new'
 	end
 end
 
+
+# signin 
 get '/sessions/new' do 
 	erb :'/sessions/new'
 end
@@ -62,7 +64,7 @@ post '/sessions' do
 		session[:user_id] = user.id 
 		redirect to('/')
 	else
-		flash[:error] = 'Sorry, wrong email or password!'
+		flash.now[:error] = 'Sorry, wrong email or password!'
 		erb :'/sessions/new'
 	end
 end
@@ -73,8 +75,3 @@ delete '/sessions' do
 	redirect to('/')
 end
 
-helpers do 
-	def current_user
-		@current_user ||=User.get(session[:user_id]) if session[:user_id]
-	end
-end

@@ -2,6 +2,7 @@ require_relative './helpers/session'
 include SessionHelpers
 
 feature "User signs up" do 
+
 	scenario "for first time" do 
 		visit '/'
 		sign_up("juan@example.com", "pass", "pass", "Juan Mata", "juan8")
@@ -13,6 +14,20 @@ feature "User signs up" do
 		visit '/'
 		lambda { sign_up("juan@example.com", "pass", "wrongpass", "Juan Mata", "juan8") }.should change(User, :count).by(0)
 		expect(page).to have_content('Sorry, your passwords do NOT match!')
+	end
+
+	scenario "with an already registered email address" do 
+		visit '/'
+		lambda {sign_up("juan@example.com", "pass", "pass", "Juan Mata", "juan8")}.should change(User, :count).by (1)
+		lambda {sign_up("juan@example.com", "newpass", "newpass", "John", "johnny")}.should change(User, :count).by (0)
+		expect(page).to have_content('Sorry this email is already registered!')
+	end
+
+	scenario "with an already taken username" do 
+		visit '/'
+		lambda {sign_up("juan@example.com", "pass", "pass", "Juan Mata", "juan8")}.should change(User, :count).by (1)
+		lambda {sign_up("user@example.com", "newpass", "newpass", "John", "juan8")}.should change(User, :count).by (0)
+		expect(page).to have_content('Sorry this username is already taken!')
 	end
 
 end

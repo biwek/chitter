@@ -1,7 +1,12 @@
 <h3> Sign up! </h3>
 
-<% if flash[:error] %>
-	<%= flash[:error] %>
+<% if flash[:errors] && !flash[:errors].empty? %>
+Sorry there were following errors:
+	<ol>
+	<% flash[:errors].each do |error| %>
+		<li> <%= error %> </li>
+	<% end %>
+	</ol>
 <% end %>
 
 <div id='sign_up'>
