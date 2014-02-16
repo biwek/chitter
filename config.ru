@@ -1,3 +1,3 @@
 require './app/chitter'
 
-run Sinatra::Application
+run Chitter

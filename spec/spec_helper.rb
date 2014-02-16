@@ -5,7 +5,7 @@ require 'database_cleaner'
 require 'capybara/rspec'
 require_relative '../app/chitter'
 
-Capybara.app = Sinatra::Application
+Capybara.app = Chitter
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
