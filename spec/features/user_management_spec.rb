@@ -1,3 +1,6 @@
+require_relative './helpers/session'
+include SessionHelpers
+
 feature "User signs up" do 
 	scenario "for first time" do 
 		visit '/'
@@ -12,17 +15,6 @@ feature "User signs up" do
 		expect(page).to have_content('Sorry, your passwords do NOT match!')
 	end
 
-	def sign_up(email, password, confirm_password, name, username)
-		visit '/users/new'
-		within('#sign_up') do 
-			fill_in 'email', with: email
-			fill_in 'password', with: password
-			fill_in 'confirm_password', with: confirm_password
-			fill_in 'name', with: name
-			fill_in 'username', with: username
-			click_button 'Sign up'
-		end
-	end	
 end
 
 feature "User signs in" do 
@@ -41,12 +33,11 @@ feature "User signs in" do
 		expect(page).to have_content("Welcome, Juan Mata")
 	end
 
-	def sign_in(email, password)
-		visit '/sessions/new'
-		within('#sign_in') do 
-			fill_in 'email', with: email
-			fill_in 'password', with: password
-			click_button 'Sign in'
-		end
+	scenario "with invalid details" do 
+		visit '/'
+		sign_in("juan@example.com", "wrongpass")
+		expect(page).not_to have_content("Welcome, Juan Mata")
+		expect(page).to have_content("Sorry, wrong email or password!")
 	end
+
 end

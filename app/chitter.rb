@@ -16,6 +16,7 @@ set :session_secret, 'secret key'
 use Rack::Flash
 
 get '/' do 
+	@peeps = Peep.all
 	erb :index
 end
 
@@ -59,7 +60,7 @@ post '/sessions' do
 		session[:user_id] = user.id 
 		redirect to('/')
 	else
-		flash[:error] = 'wrong email or password!'
+		flash[:error] = 'Sorry, wrong email or password!'
 		erb :'/sessions/new'
 	end
 end

@@ -1,4 +1,8 @@
 require 'spec_helper'
+require_relative './helpers/peep'
+require_relative './helpers/session'
+include PeepHelpers
+include SessionHelpers
 
 feature "Creating peeps" do 
 
@@ -25,22 +29,6 @@ feature "Creating peeps" do
 		expect(Peep.count).to eq(0)
 		lambda { create_peep("My first post") }.should raise_error('Unable to find css "#create_peep"')
 		expect(Peep.count).to eq(0)
-	end
-
-	def create_peep(post)
-		within('#create_peep') do 
-			fill_in 'post', with: post
-			click_button 'Peep'
-		end
-	end
-
-	def sign_in(email, password)
-		visit '/sessions/new'
-		within('#sign_in') do 
-			fill_in 'email', with: email
-			fill_in 'password', with: password
-			click_button 'Sign in'
-		end
 	end
 
 end
