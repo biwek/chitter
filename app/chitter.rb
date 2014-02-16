@@ -21,7 +21,9 @@ end
 
 post '/peep' do
 	peep = params[:post]
-	Peep.create({post: peep}) 
+	user = User.get(session[:user_id])
+	Peep.create({user: user,
+							 post: peep}) 
 	redirect '/'
 end
 
@@ -41,6 +43,24 @@ post '/users' do
 	else
 		flash[:error] = 'Sorry, your passwords do NOT match!'
 		erb :'users/new'
+	end
+end
+
+get '/sessions/new' do 
+	erb :'/sessions/new'
+end
+
+post '/sessions' do
+	email = params[:email]
+	password = params[:password]
+	user = User.authenticate(email, password)
+
+	if user 
+		session[:user_id] = user.id 
+		redirect to('/')
+	else
+		flash[:error] = 'wrong email or password!'
+		erb :'/sessions/new'
 	end
 end
 

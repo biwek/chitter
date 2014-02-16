@@ -1,5 +1,4 @@
 feature "User signs up" do 
-
 	scenario "for first time" do 
 		visit '/'
 		sign_up("juan@example.com", "pass", "pass", "Juan Mata", "juan8")
@@ -24,5 +23,30 @@ feature "User signs up" do
 			click_button 'Sign up'
 		end
 	end	
+end
 
+feature "User signs in" do 
+
+	before(:each) do 
+		User.create({name: 'Juan Mata',
+								 username: 'juan8',
+								 email: 'juan@example.com',
+								 password: 'pass',
+								 password_confirmation: 'pass'})
+	end
+
+	scenario "with valid details" do 
+		visit '/'
+		sign_in("juan@example.com", "pass")
+		expect(page).to have_content("Welcome, Juan Mata")
+	end
+
+	def sign_in(email, password)
+		visit '/sessions/new'
+		within('#sign_in') do 
+			fill_in 'email', with: email
+			fill_in 'password', with: password
+			click_button 'Sign in'
+		end
+	end
 end

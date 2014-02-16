@@ -1,0 +1,11 @@
+<h3> Sign in </h3>
+<% if flash[:error] %>
+	<%= flash[:error] %>
+<% end %>
+<div id='sign_in'>
+	<form action="/sessions" method="post">
+		Email: <input type='text' name='email'>
+		Password: <input type='password' name='password'>
+		<input type='submit' value='Sign in'>
+	</form>
+</div>
