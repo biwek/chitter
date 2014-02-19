@@ -17,7 +17,7 @@ class User
 
 	validates_confirmation_of :password, message: 'Sorry, your passwords do NOT match!'
 	validates_presence_of :name, :username, :email
-	# validates_presence_of :password
+	validates_presence_of :password_digest
 
 	def password=(password)
 		@password = password
